@@ -1,8 +1,14 @@
 node_modules
+
 .npmignore
 .travis.yml
 .editorconfig
+
 tsconfig.json
 tslint.json
+
 src
 test
+
+.nyc_output
+coverage
