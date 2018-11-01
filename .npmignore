@@ -1,0 +1,6 @@
+node_modules
+.npmignore
+tsconfig.json
+.editorconfig
+tslint.json
+src

@@ -1,0 +1,12 @@
+{
+  "compilerOptions": {
+    "target": "es2017",
+    "module": "commonjs",
+    "declaration": true,
+    "strict": true,
+    "lib": [
+      "es2017",
+      "esnext.asynciterable"
+    ]
+  }
+}

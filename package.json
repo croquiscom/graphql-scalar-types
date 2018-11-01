@@ -1,0 +1,52 @@
+{
+  "name": "@croquiscom/graphql-scalar-types",
+  "version": "0.0.1",
+  "description": "GraphQL scalar types for croquis.com",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/croquiscom/graphql-scalar-types.git"
+  },
+  "keywords": [
+    "graphql"
+  ],
+  "author": "Sangmin Yoon <sangmin.yoon@croquis.com>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/croquiscom/graphql-scalar-types/issues"
+  },
+  "scripts": {
+    "prepublishOnly": "npm run lint && npm run build",
+    "build": "rimraf lib && tsc -p src/tsconfig.build.json",
+    "lint": "tslint -p tsconfig.json",
+    "test": "mocha --require ts-node/register -t 5000 --exit 'test/*.ts'",
+    "test:cov": "nyc npm run test",
+    "test:coveralls": "npm run test:cov && cat coverage/lcov.info | coveralls"
+  },
+  "main": "./lib/index.js",
+  "types": "./lib/index.d.ts",
+  "dependencies": {
+    "graphql": "^14.0.2"
+  },
+  "devDependencies": {
+    "@types/chai": "^4.1.7",
+    "@types/graphql": "^14.0.3",
+    "@types/mocha": "^5.2.5",
+    "@types/node": "^8.0.41",
+    "chai": "^4.2.0",
+    "coveralls": "^3.0.2",
+    "mocha": "^5.2.0",
+    "nyc": "^13.1.0",
+    "rimraf": "^2.6.1",
+    "ts-node": "^7.0.1",
+    "tslint": "^5.11.0",
+    "typescript": "^3.1.5"
+  },
+  "nyc": {
+    "extension": [
+      ".ts"
+    ],
+    "reporter": [
+      "lcov"
+    ]
+  }
+}
