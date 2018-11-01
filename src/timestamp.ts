@@ -1,0 +1,46 @@
+import { GraphQLScalarType } from 'graphql';
+import { GraphQLError } from 'graphql/error';
+import { Kind } from 'graphql/language';
+
+// tslint:disable-next-line:variable-name
+export const CrTimestamp = new GraphQLScalarType({
+  name: 'CrTimestamp',
+
+  description: 'Serve Date object as timestamp',
+
+  serialize(value) {
+    if (!(value instanceof Date)) {
+      throw new TypeError(`Value is not an instance of Date : ${value}`);
+    }
+
+    if (Number.isNaN(value.getTime())) {
+      throw new TypeError('Value is not a valid Date');
+    }
+
+    return value.getTime();
+  },
+
+  parseValue(value) {
+    const date = new Date(value);
+
+    if (Number.isNaN(date.getTime())) {
+      throw new TypeError(`Value is not a valid Date: ${value}`);
+    }
+
+    return date;
+  },
+
+  parseLiteral(valueAST) {
+    if (valueAST.kind !== Kind.INT && valueAST.kind !== Kind.FLOAT) {
+      throw new GraphQLError(`Can only parse numbers but got a: ${valueAST.kind}`);
+    }
+
+    const result = new Date(Number(valueAST.value));
+
+    if (Number.isNaN(result.getTime())) {
+      throw new GraphQLError(`Value is not a valid Date: ${valueAST.value}`);
+    }
+
+    return result;
+  },
+});
