@@ -24,7 +24,13 @@
       true,
       "allow-snake-case",
       "allow-leading-underscore"
-    ]
+    ],
+    "max-line-length": {
+      "options": [
+        400
+      ]
+    },
+    "object-literal-sort-keys": false
   },
   "rulesDirectory": []
 }
