@@ -1,5 +1,5 @@
 import { expect } from 'chai';
-import { graphql, GraphQLBoolean, GraphQLObjectType, GraphQLSchema } from 'graphql';
+import { graphql, GraphQLBoolean, GraphQLInt, GraphQLObjectType, GraphQLSchema } from 'graphql';
 import { CrJson } from '..';
 
 const json_fixture = {
@@ -7,14 +7,14 @@ const json_fixture = {
   int: 3,
   float: 3.14,
   true: true,
-  false: true,
+  false: false,
   null: null,
   object: {
     string: 'string',
     int: 3,
     float: 3.14,
     true: true,
-    false: true,
+    false: false,
     null: null,
   },
   array: [
@@ -32,14 +32,14 @@ const json_literal = `{
   int: 3,
   float: 3.14,
   true: true,
-  false: true,
+  false: false,
   null: null,
   object: {
     string: "string",
     int: 3,
     float: 3.14,
     true: true,
-    false: true,
+    false: false,
     null: null,
   },
   array: [
@@ -151,7 +151,7 @@ describe('CrJson', () => {
   });
 
   describe('parseLiteral', () => {
-    it('valid json', async () => {
+    it('valid json - without variable', async () => {
       let value;
       const schema = new GraphQLSchema({
         query: new GraphQLObjectType({
@@ -174,6 +174,63 @@ describe('CrJson', () => {
       });
 
       const result = await graphql(schema, `{ query(input: ${json_literal}) }`);
+      expect(result.data).to.eql({ query: true });
+      expect(result).to.not.have.property('errors');
+      expect(value).to.instanceof(Object);
+      expect(value).to.eql(json_fixture);
+    });
+
+    it('valid json - with variable', async () => {
+      let value;
+      const schema = new GraphQLSchema({
+        query: new GraphQLObjectType({
+          fields: {
+            query: {
+              args: {
+                input: {
+                  type: CrJson,
+                },
+              },
+              resolve: (_, { input }) => {
+                value = input;
+                return true;
+              },
+              type: GraphQLBoolean,
+            },
+          },
+          name: 'Query',
+        }),
+        types: [GraphQLInt],
+      });
+
+      const result = await graphql(schema, `
+        query ($intValue: Int = 3) {
+          query(input: {
+            string: "string",
+            int: $intValue,
+            float: 3.14,
+            true: true,
+            false: false,
+            null: null,
+            object: {
+              string: "string",
+              int: $intValue,
+              float: 3.14,
+              true: true,
+              false: false,
+              null: null,
+            },
+            array: [
+              "string",
+              $intValue,
+              3.14,
+              true,
+              false,
+              null,
+            ],
+          }),
+        }
+      `);
       expect(result.data).to.eql({ query: true });
       expect(result).to.not.have.property('errors');
       expect(value).to.instanceof(Object);
