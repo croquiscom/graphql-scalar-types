@@ -4,6 +4,11 @@
 
 GraphQL scalar types for croquis.com
 
+# Inspiration & Reference
+
+* [@okgrow/graphql-scalars](https://github.com/okgrow/graphql-scalars)
+* [graphql-type-json](https://github.com/taion/graphql-type-json)
+
 # License
 
 MIT licenses. See [LICENSE](https://github.com/croquiscom/graphql-scalar-types/blob/master/LICENSE) for more details.
