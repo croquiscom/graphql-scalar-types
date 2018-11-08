@@ -9,15 +9,16 @@ export const CrTimestamp = new GraphQLScalarType({
   description: 'Serve Date object as timestamp',
 
   serialize(value) {
-    if (!(value instanceof Date)) {
-      throw new TypeError(`Value is not an instance of Date : ${value}`);
+    if (value instanceof Date) {
+      if (Number.isNaN(value.getTime())) {
+        throw new TypeError('Value is not a valid Date');
+      }
+      return value.getTime();
+    } else if (typeof value === 'number') {
+      return value;
+    } else {
+      throw new TypeError(`Value is not an instance of Date or number: ${value}`);
     }
-
-    if (Number.isNaN(value.getTime())) {
-      throw new TypeError('Value is not a valid Date');
-    }
-
-    return value.getTime();
   },
 
   parseValue(value) {

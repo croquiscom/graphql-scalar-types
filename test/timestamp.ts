@@ -39,6 +39,25 @@ describe('CrTimestamp', () => {
       expect(result.data).to.eql({ query: null });
       expect(result.errors![0].message).to.eql('Value is not a valid Date');
     });
+
+    it('timestamp is valid', async () => {
+      const date = new Date(2018, 9, 12, 5, 20);
+      const schema = new GraphQLSchema({
+        query: new GraphQLObjectType({
+          fields: {
+            query: {
+              resolve: () => date.getTime(),
+              type: CrTimestamp,
+            },
+          },
+          name: 'Query',
+        }),
+      });
+      const result = await graphql(schema, '{ query }');
+      expect(result.data).to.eql({ query: date.getTime() });
+      expect(result).to.not.have.property('errors');
+    });
+
   });
 
   describe('parseValue', () => {
