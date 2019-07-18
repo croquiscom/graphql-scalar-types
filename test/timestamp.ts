@@ -115,7 +115,7 @@ describe('CrTimestamp', () => {
       const result = await graphql(schema, 'query($input: CrTimestamp) { query(input: $input) }',
         null, null, { input: 'a' });
       expect(result.data).to.eql(undefined);
-      const msg = 'Variable "$input" got invalid value "a"; Expected type CrTimestamp; Value is not a valid Date: a';
+      const msg = 'Variable "$input" got invalid value "a"; Expected type CrTimestamp. Value is not a valid Date: a';
       expect(result.errors![0].message).to.eql(msg);
       expect(value).to.eql(undefined);
     });
